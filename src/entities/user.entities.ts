@@ -1,30 +1,34 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import Schedule from "./schedules.entities";
 
 @Entity("users")
 class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: "varchar", length: 45 })
+  @Column({ type: 'varchar', length: 45 })
   name: string;
 
-  @Column({ type: "varchar", length: 45, unique: true })
+  @Column({ type: 'varchar', length: 45, unique: true })
   email: string;
 
-  @Column({ type: "varchar", length: 120 })
+  @Column({ type: 'varchar', length: 120 })
   password: string;
 
-  @Column({ type: "boolean", default: false })
+  @Column({ type: 'boolean', default: false })
   admin: boolean;
 
-  @CreateDateColumn({ type: "timestamp" })
-  createdAt: Date;
+  @CreateDateColumn({ type: 'date' })
+  createdAt: string;
 
-  @UpdateDateColumn({ type: "timestamp" })
-  updatedAt: Date;
+  @UpdateDateColumn({ type: 'date' })
+  updatedAt: string;
 
-  @DeleteDateColumn({ type: "timestamp" })
-  deletedAt: Date;
+  @DeleteDateColumn({ type: 'date' })
+  deletedAt: string;
+
+  @OneToMany(()=> Schedule, (schedule) => schedule.user)
+  schedules: Schedule[]
 }
 
 export default User;
