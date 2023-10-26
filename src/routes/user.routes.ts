@@ -1,15 +1,16 @@
 import { Router } from "express";
 import { userCreateController, userDeleteController, userReadController, userUpdateController } from "../controllers/user.controller";
-import { validadeBody } from "../middlewares/validateBody.middleware";
 import { UserCreateSchema, UserUpdateSchema } from "../schemas/user.schema";
-import { verifyId } from "../middlewares/verifyId.middlewares";
+import { verifyUniqueUserEmail, verifyUserId } from "../middlewares/users.middlewares";
+import { validadeBody, verifyAdmin, verifyPermissions, verifyToken } from "../middlewares/globals.middlewares";
 
-export const userRoutes: Router = Router()
 
-userRoutes.post('/',validadeBody(UserCreateSchema), userCreateController)
-userRoutes.get('/', userReadController)
+export const userRouter: Router = Router()
 
-userRoutes.use('/:id', verifyId)
+userRouter.post('/',validadeBody(UserCreateSchema),verifyUniqueUserEmail, userCreateController)
+userRouter.get('/', verifyToken, verifyAdmin, userReadController)
 
-userRoutes.patch('/:id', validadeBody(UserUpdateSchema), userUpdateController)
-userRoutes.delete('/:id', userDeleteController)
+userRouter.use('/:id', verifyUserId)
+
+userRouter.patch('/:id', validadeBody(UserUpdateSchema), verifyToken, verifyPermissions, userUpdateController)
+userRouter.delete('/:id', verifyToken, verifyPermissions, verifyAdmin, userDeleteController)

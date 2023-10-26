@@ -2,7 +2,7 @@ import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryG
 import Schedule from "./schedules.entities";
 
 @Entity("users")
-class User {
+export default class User {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -30,5 +30,3 @@ class User {
   @OneToMany(()=> Schedule, (schedule) => schedule.user)
   schedules: Schedule[]
 }
-
-export default User;

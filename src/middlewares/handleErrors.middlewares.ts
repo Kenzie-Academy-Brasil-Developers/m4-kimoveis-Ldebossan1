@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from "express";
-import { AppError } from "../errors/AppError.error";
-import { z } from "zod";
-import { JsonWebTokenError } from "jsonwebtoken";
+import { NextFunction, Request, Response } from "express"
+import { AppError } from "../errors/AppError.error"
+import { z } from "zod"
+import { JsonWebTokenError } from "jsonwebtoken"
 
 export const handleError = (error: unknown, req: Request, res: Response, next: NextFunction): Response => {
     if(error instanceof AppError){
