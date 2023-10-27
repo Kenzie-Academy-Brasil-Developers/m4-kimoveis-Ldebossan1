@@ -4,7 +4,6 @@ import express from 'express';
 import { routes } from './routes/index.routes';
 import { handleError } from './middlewares/handleErrors.middlewares';
 
-
 const app = express();
 app.use(express.json());
 

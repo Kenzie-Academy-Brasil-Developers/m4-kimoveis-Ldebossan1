@@ -11,40 +11,40 @@ export const validadeBody = (schema: ZodTypeAny) => (req: Request, res: Response
 }
 
 export const verifyToken = (req: Request, res: Response, next: NextFunction): void => {
-    const {authorization} = req.headers
+    const { authorization } = req.headers
 
-    if(!authorization){
+    if (!authorization) {
         throw new AppError('Missing bearer token', 401)
     }
 
     const token: string = authorization.split(' ')[1]
     const decoded = verify(token, process.env.SECRET_KEY!)
 
-    res.locals = {...res.locals, decoded}
-    
+    res.locals = { ...res.locals, decoded }
+
     return next()
 }
 
 export const verifyAdmin = (req: Request, res: Response, next: NextFunction): void => {
-    const {admin} = res.locals.decoded
+    const { admin } = res.locals.decoded
 
-    if(!admin){
-        throw new AppError('Insufficient permission.', 403)
+    if (!admin) {
+        throw new AppError('Insufficient permission', 403)
     }
 
     return next()
 }
 
 export const verifyPermissions = (req: Request, res: Response, next: NextFunction): void => {
-    const {id} = req.params
-    const {admin, sub} = res.locals.decoded
+    const { id } = req.params
+    const { admin, sub } = res.locals.decoded
 
-    if(admin){
+    if (admin) {
         return next()
     }
-    
-    if(id !== sub){
-        throw new AppError('Insufficient permission.', 403)
+
+    if (id !== sub) {
+        throw new AppError('Insufficient permission', 403)
     }
 
     return next()

@@ -1,7 +1,14 @@
 import { z } from "zod";
-import { UserCreateSchema, UserReadSchema, UserSchema, UserUpdateSchema } from "../schemas/user.schema";
+import { createUserSchema, userLoginSchema, userReadSchema, userReturnSchema } from "../schemas/user.schema";
+import { DeepPartial, Repository } from "typeorm";
+import User from "../entities/user.entities";
 
-export type iUser = z.infer<typeof UserSchema>
-export type UserCreate = z.infer<typeof UserCreateSchema>
-export type UserRead = z.infer<typeof UserReadSchema>
-export type UserUpdate = z.infer<typeof UserUpdateSchema>
+export type UserCreate = z.infer<typeof createUserSchema>
+export type UserReadReturn = UserReturn[]
+export type UserBodyUpdate = Omit<UserCreate, 'admin'>
+export type UserUpdate = DeepPartial<UserBodyUpdate>
+export type UserReturn = z.infer<typeof userReturnSchema>
+export type UserLogin = z.infer<typeof userLoginSchema>
+export type LoginReturn = { token: string }
+
+export type UserRepo = Repository<User>
